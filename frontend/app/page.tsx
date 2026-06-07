@@ -12,8 +12,8 @@ export default function Home() {
   const [tabValue, setTabValue] = useState("documents");
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1  w-full max-w-7xl flex-col bg-white">
+    <div className="flex flex-col flex-1 items-center justify-center bg-white font-sans ">
+      <main className="flex flex-1  w-full max-w-7xl border-x border-neutral-50 flex-col bg-white">
         <Navigation />
 
         <Tabs value={tabValue} onValueChange={setTabValue}>

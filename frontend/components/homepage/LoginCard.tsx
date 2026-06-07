@@ -10,27 +10,27 @@ interface BoundingBoxProps {
 
 export const BoundingBox: React.FC<BoundingBoxProps> = ({}) => {
   return (
-    <div className="relative  p-2 inline-block w-full max-w-xl">
+    <div className="relative group   p-2 inline-block w-full max-w-xl">
       {/* Top-Left Crosshair */}
-      <div className="absolute -top-1.5 left-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
+      <div className="transition duration-200 absolute -top-1.5 group-hover:-translate-2 left-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
         +
       </div>
 
       {/* Top-Right Crosshair */}
-      <div className="absolute -top-1.5 right-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
+      <div className="transition duration-200 absolute -top-1.5 right-1 group-hover:-translate-y-2 group-hover:translate-x-2 text-zinc-400 pointer-events-none select-none font-light text-xl">
         +
       </div>
 
       {/* Bottom-Left Crosshair */}
-      <div className="absolute -bottom-1.5 left-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
+      <div className="transition duration-200 group-hover:translate-y-2 group-hover:-translate-x-2  absolute -bottom-1.5 left-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
         +
       </div>
 
       {/* Bottom-Right Crosshair */}
-      <div className="absolute -bottom-1.5 right-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
+      <div className="transition duration-200 group-hover:translate-y-2 group-hover:translate-x-2 absolute -bottom-1.5 right-1 text-zinc-400 pointer-events-none select-none font-light text-xl">
         +
       </div>
-      <div className="relative overflow-hidden px-8 pt-8 pb-4  border border-dashed border-zinc-300 group  bg-white text-zinc-900 font-sans">
+      <div className="relative overflow-hidden px-8 pt-8 pb-4 border-dashed  border  border-zinc-300 group  bg-white text-zinc-900 font-sans">
         <div className="absolute scale-60 -right-8 group-hover:-translate-x-1  transition duration-150">
           <DOCUMENT_SVG classname="group-hover:skew-y-0 " />
         </div>

@@ -9,7 +9,7 @@ const DOCUMENT_SVG = ({ classname }: { classname?: string }) => {
         viewBox="0 0 168 197"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={`skew-y-8  `}
+        className={`skew-y-8 border border-neutral-300 rounded-md `}
       >
         <rect width="168" height="197" fill="#F9F9F9" />
         <rect x="9" y="16" width="92" height="5" rx="2.5" fill="#D9D9D9" />
