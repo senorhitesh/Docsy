@@ -2,6 +2,7 @@
 import { useState } from "react";
 import BoundingBox from "@/components/homepage/LoginCard";
 import Navigation from "@/components/homepage/Navigation";
+import Footer from "@/components/homepage/Footer";
 import Tabs, {
   TabsList,
   TabsTrigger,
@@ -29,6 +30,7 @@ export default function Home() {
             <p>Welcome to the homepage.</p>
           </TabsContent>
         </Tabs>
+        <Footer />
       </main>
     </div>
   );
