@@ -1,4 +1,4 @@
-from backend.app.core.database import engine
+from app.core.database import engine
 from sqlalchemy.orm import DeclarativeBase, relationship 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import String , Column , DateTime , Text , ForeignKey , Integer , Float , func

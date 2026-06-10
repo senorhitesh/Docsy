@@ -1,12 +1,24 @@
-from fastapi import Depends ,Depends,HTTPException, status
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
-from jose import JWTError, jwt
-from dotenv import load_dotenv
-import os
-from .database import SessionLocal
+from app.core.security import decode_token
+from app.core.database import get_db
+from app.modules.users.models import User
 
-load_dotenv()
+bearer = HTTPBearer()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+def get_current_user(
+        credentials:HTTPAuthorizationCredentials = Depends(bearer),
+        db:Session = Depends(get_db)
+) -> User:
+    payload = decode_token(credentials.credentials)
+
+    if not payload or payload.get("type") != "access":
+        raise HTTPException(status_code=401,detail="Invalid token or Expired")
+    
+    user = db.query(User).filter(id=payload["sub"]).first()
+
+    if not user or not  user.is_active:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return user

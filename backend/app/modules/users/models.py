@@ -1,4 +1,4 @@
-from backend.app.core.database import engine
+from app.core.database import engine
 from sqlalchemy.orm import DeclarativeBase,relationship
 from sqlalchemy import String , Column , Boolean , DateTime , func
 from sqlalchemy.dialects.postgresql import UUID
@@ -7,7 +7,7 @@ class Base(DeclarativeBase):
     pass
 
 class User(Base):
-    __tablename__="users"
+    __tablename__= "users"
 
     id              = Column(UUID(as_uuid=True) , primary_key=True, default=uuid.uuid4)
     full_name       = Column(String,nullable=False)
