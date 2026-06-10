@@ -1,4 +1,4 @@
-from database import engine
+from backend.app.core.database import engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import String
 
