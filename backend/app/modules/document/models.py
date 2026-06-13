@@ -1,7 +1,7 @@
 from app.core.database import engine
 from sqlalchemy.orm import DeclarativeBase, relationship
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import String , Column 
+from sqlalchemy import String , Column , ForeignKey
 import uuid
 
 class Base(DeclarativeBase):
@@ -10,7 +10,7 @@ class Base(DeclarativeBase):
 class Documents(Base):
     __tablename__="documents"
     id = Column(UUID(as_uuid=True), primary_key=True , default=uuid.uuid4)
-    owner_id = Column(UUID(as_uuid=True),ForigenKey="users.id",nullable=False)
+    owner_id = Column(UUID(as_uuid=True),ForeignKey("users.id"),nullable=False)
     title = Column(String,nullable=False)
     original_path = Column(String,nullable=False)
     signed_path = Column(String,nullable=True)

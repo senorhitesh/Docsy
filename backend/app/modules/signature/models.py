@@ -12,7 +12,7 @@ class Base(DeclarativeBase):
 class SignatureRequest(Base):
     __tablename__    ="signature_requests"
     id               = Column(UUID(as_uuid=True),primary_key=True,default=uuid.uuid4)
-    document_id      = Column(UUID(as_uuid=True), ForeginKey="documents.id" , nullable=False)
+    document_id      = Column(UUID(as_uuid=True), ForeignKey("documents.id") , nullable=False)
     signer_mail      = Column(String, nullable=False)
     token            = Column(String,unique=True,nullable=True)
     token_expires_at = Column(DateTime(timezone=True), nullable=False)
