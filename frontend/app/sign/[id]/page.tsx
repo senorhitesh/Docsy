@@ -5,7 +5,15 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import Navigation from "@/components/homepage/Navigation";
 import Footer from "@/components/homepage/Footer";
-import { FileText, Edit3, Check, Trash2, ArrowLeft, Info, HelpCircle } from "lucide-react";
+import {
+  FileText,
+  Edit3,
+  Check,
+  Trash2,
+  ArrowLeft,
+  Info,
+  HelpCircle,
+} from "lucide-react";
 import Link from "next/link";
 import ProtectedRoute from "@/app/component/ProtectedRoute";
 
@@ -35,7 +43,12 @@ interface PageRendererProps {
   children: React.ReactNode;
 }
 
-const PageRenderer: React.FC<PageRendererProps> = ({ pageNum, pdfDoc, onPageClick, children }) => {
+const PageRenderer: React.FC<PageRendererProps> = ({
+  pageNum,
+  pdfDoc,
+  onPageClick,
+  children,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [rendered, setRendered] = useState(false);
@@ -88,7 +101,11 @@ const PageRenderer: React.FC<PageRendererProps> = ({ pageNum, pdfDoc, onPageClic
   );
 };
 
-export default function SignPage({ params }: { params: Promise<{ id: string }> }) {
+export default function SignPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const { token } = useAuth();
   const router = useRouter();
@@ -103,7 +120,9 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
   // Signature state
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [placedSignatures, setPlacedSignatures] = useState<PlacedSignature[]>([]);
+  const [placedSignatures, setPlacedSignatures] = useState<PlacedSignature[]>(
+    [],
+  );
   const [isFinalized, setIsFinalized] = useState(false);
 
   // Drawing state
@@ -124,7 +143,8 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
   // Load PDF.js from CDN
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js";
+    script.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js";
     script.async = true;
     script.onload = () => {
       if ((window as any).pdfjsLib) {
@@ -169,7 +189,9 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
         const arrayBuffer = await pdfRes.arrayBuffer();
 
         // Parse PDF using loaded pdfjsLib
-        const loadingTask = (window as any).pdfjsLib.getDocument({ data: arrayBuffer });
+        const loadingTask = (window as any).pdfjsLib.getDocument({
+          data: arrayBuffer,
+        });
         const doc = await loadingTask.promise;
         setPdfDoc(doc);
         setNumPages(doc.numPages);
@@ -262,7 +284,7 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
     if (modalTab === "draw") {
       const canvas = signatureCanvasRef.current;
       if (!canvas) return;
-      
+
       const dataUrl = canvas.toDataURL("image/png");
       setSignatureImage(dataUrl);
     } else {
@@ -277,7 +299,7 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(typedName || "Signature", 200, 75);
-        
+
         const dataUrl = tempCanvas.toDataURL("image/png");
         setSignatureImage(dataUrl);
       }
@@ -287,12 +309,17 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
   };
 
   // Placing Signature on Click
-  const handlePageClick = (pageNum: number, e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePageClick = (
+    pageNum: number,
+    e: React.MouseEvent<HTMLDivElement>,
+  ) => {
     // If active drag is happening, don't place another
     if (activeDragId !== null) return;
 
     if (!signatureImage) {
-      setError("Please draw and save a signature first, then click on the page to place it.");
+      setError(
+        "Please draw and save a signature first, then click on the page to place it.",
+      );
       return;
     }
 
@@ -345,7 +372,7 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
           };
         }
         return sig;
-      })
+      }),
     );
   };
 
@@ -393,7 +420,10 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
       setIsFinalized(true);
     } catch (err: any) {
       console.error("Error signing document:", err);
-      setError(err.message || "Failed to save signed document. Is the backend running?");
+      setError(
+        err.message ||
+          "Failed to save signed document. Is the backend running?",
+      );
     } finally {
       setSaving(false);
     }
@@ -409,7 +439,6 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
         <Navigation />
 
         <div className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto border-x border-zinc-100 bg-white">
-          
           {/* Side Toolbar / Control Panel */}
           <div className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-zinc-100 p-6 flex flex-col justify-between shrink-0 bg-zinc-50/50">
             <div className="space-y-6">
@@ -426,13 +455,19 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-fuchsia-700" />
-                  <h2 className="text-base font-bold text-zinc-900 truncate" title={documentMeta?.filename}>
+                  <h2
+                    className="text-base font-bold text-zinc-900 truncate"
+                    title={documentMeta?.filename}
+                  >
                     {documentMeta?.filename || "Loading..."}
                   </h2>
                 </div>
                 {documentMeta && (
                   <p className="text-xs text-zinc-500 font-medium">
-                    Pages: {numPages} | Status: <span className="uppercase text-[10px] font-bold bg-zinc-200/60 px-1.5 py-0.5 rounded">{documentMeta.status}</span>
+                    Pages: {numPages} | Status:{" "}
+                    <span className="uppercase text-[10px] font-bold bg-zinc-200/60 px-1.5 py-0.5 rounded">
+                      {documentMeta.status}
+                    </span>
                   </p>
                 )}
               </div>
@@ -444,10 +479,19 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
                   Instructions
                 </h4>
                 <ol className="text-xs text-zinc-600 space-y-1.5 pl-4 list-decimal leading-relaxed">
-                  <li>Click <b>Draw Signature</b> to sign.</li>
-                  <li>Click anywhere on the document page wrappers to place your signature.</li>
-                  <li>Click and drag placed signatures to position them perfectly.</li>
-                  <li>Click <b>Finalize Document</b> when done.</li>
+                  <li>
+                    Click <b>Draw Signature</b> to sign.
+                  </li>
+                  <li>
+                    Click anywhere on the document page wrappers to place your
+                    signature.
+                  </li>
+                  <li>
+                    Click and drag placed signatures to position them perfectly.
+                  </li>
+                  <li>
+                    Click <b>Finalize Document</b> when done.
+                  </li>
                 </ol>
               </div>
 
@@ -516,7 +560,9 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
             ) : error && !pdfDoc ? (
               <div className="flex flex-col items-center justify-center py-32 text-center space-y-2 max-w-sm">
                 <FileText className="w-12 h-12 text-red-300" />
-                <h3 className="text-sm font-bold text-zinc-800">Failed to render</h3>
+                <h3 className="text-sm font-bold text-zinc-800">
+                  Failed to render
+                </h3>
                 <p className="text-xs text-zinc-500 leading-normal">{error}</p>
                 <Link
                   href="/"
@@ -528,51 +574,59 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
             ) : (
               /* PDF Pages Container */
               <div className="flex flex-col items-center w-full max-w-4xl">
-                {Array.from({ length: numPages }, (_, i) => i + 1).map((pageNum) => (
-                  <PageRenderer
-                    key={pageNum}
-                    pageNum={pageNum}
-                    pdfDoc={pdfDoc}
-                    onPageClick={handlePageClick}
-                  >
-                    {/* Render placed signatures overlay on this page */}
-                    {placedSignatures
-                      .filter((sig) => sig.pageNum === pageNum)
-                      .map((sig) => (
-                        <div
-                          key={sig.id}
-                          onMouseDown={(e) => handleSignatureMouseDown(sig.id, e)}
-                          style={{
-                            position: "absolute",
-                            left: sig.x,
-                            top: sig.y,
-                            width: sig.width,
-                            height: sig.height,
-                          }}
-                          className={`group border border-dashed border-fuchsia-500 bg-fuchsia-50/15 cursor-move ${
-                            activeDragId === sig.id ? "scale-102 border-fuchsia-600 shadow-sm" : ""
-                          }`}
-                        >
-                          <img
-                            src={sig.image}
-                            alt="Placed Signature"
-                            className="w-full h-full object-contain pointer-events-none"
-                          />
-                          {/* Remove signature action */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
-                              setPlacedSignatures((prev) => prev.filter((s) => s.id !== sig.id));
+                {Array.from({ length: numPages }, (_, i) => i + 1).map(
+                  (pageNum) => (
+                    <PageRenderer
+                      key={pageNum}
+                      pageNum={pageNum}
+                      pdfDoc={pdfDoc}
+                      onPageClick={handlePageClick}
+                    >
+                      {/* Render placed signatures overlay on this page */}
+                      {placedSignatures
+                        .filter((sig) => sig.pageNum === pageNum)
+                        .map((sig) => (
+                          <div
+                            key={sig.id}
+                            onMouseDown={(e) =>
+                              handleSignatureMouseDown(sig.id, e)
+                            }
+                            style={{
+                              position: "absolute",
+                              left: sig.x,
+                              top: sig.y,
+                              width: sig.width,
+                              height: sig.height,
                             }}
-                            className="absolute -top-2.5 -right-2.5 h-5 w-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none border border-white cursor-pointer"
+                            className={`group border border-dashed border-fuchsia-500 bg-fuchsia-50/15 cursor-move ${
+                              activeDragId === sig.id
+                                ? "scale-102 border-fuchsia-600 shadow-sm"
+                                : ""
+                            }`}
                           >
-                            ✕
-                          </button>
-                        </div>
-                      ))}
-                  </PageRenderer>
-                ))}
+                            <img
+                              src={sig.image}
+                              alt="Placed Signature"
+                              className="w-full h-full object-contain pointer-events-none"
+                            />
+                            {/* Remove signature action */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                setPlacedSignatures((prev) =>
+                                  prev.filter((s) => s.id !== sig.id),
+                                );
+                              }}
+                              className="absolute -top-2.5 -right-2.5 h-5 w-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none border border-white cursor-pointer"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                    </PageRenderer>
+                  ),
+                )}
               </div>
             )}
           </div>
@@ -584,7 +638,9 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
             <div className="bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
               {/* Modal Header */}
               <div className="px-6 py-4 border-b border-zinc-100 flex items-center justify-between shrink-0">
-                <h3 className="text-sm font-bold text-zinc-900">Create Your Signature</h3>
+                <h3 className="text-sm font-bold text-zinc-900">
+                  Create Your Signature
+                </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
                   className="text-zinc-400 hover:text-zinc-900 text-xs font-semibold focus:outline-none cursor-pointer"
@@ -638,14 +694,18 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
                       className="border border-zinc-200 bg-zinc-50 rounded-lg cursor-crosshair shadow-inner w-full max-w-[400px]"
                     />
                     <p className="text-[11px] text-zinc-400 font-medium mt-3 flex items-center gap-1">
-                      <HelpCircle className="w-3.5 h-3.5" /> Use your mouse or touchscreen to draw inside the box.
+                      <HelpCircle className="w-3.5 h-3.5" /> Use your mouse or
+                      touchscreen to draw inside the box.
                     </p>
                   </div>
                 ) : (
                   /* TYPE SIGNATURE */
                   <div className="w-full space-y-4">
                     <div className="space-y-1.5 text-left">
-                      <label className="text-xs font-semibold text-zinc-700" htmlFor="modalTypedName">
+                      <label
+                        className="text-xs font-semibold text-zinc-700"
+                        htmlFor="modalTypedName"
+                      >
                         Full Name:
                       </label>
                       <input
@@ -742,7 +802,9 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
                   Document Signed Successfully!
                 </h2>
                 <p className="text-xs leading-relaxed text-zinc-500 font-medium">
-                  Your signatures have been embedded at the specified coordinates. An immutable copy is generated and logged in your audit log history.
+                  Your signatures have been embedded at the specified
+                  coordinates. An immutable copy is generated and logged in your
+                  audit log history.
                 </p>
               </div>
 
@@ -758,8 +820,6 @@ export default function SignPage({ params }: { params: Promise<{ id: string }> }
             </div>
           </div>
         )}
-
-        <Footer />
       </div>
     </ProtectedRoute>
   );
