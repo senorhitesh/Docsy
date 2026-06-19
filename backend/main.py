@@ -13,11 +13,20 @@ app = FastAPI(
     version="1.0.0"
 )
 
+import os
+
 # Configure CORS to allow access from frontend (localhost:3000)
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://docsyy-chi.vercel.app",
 ]
+
+# Allow additional origins from environment variables if specified
+additional_origins = os.getenv("CORS_ORIGINS")
+if additional_origins:
+    origins.extend([o.strip() for o in additional_origins.split(",") if o.strip()])
+
 
 app.add_middleware(
     CORSMiddleware,

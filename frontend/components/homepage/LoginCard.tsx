@@ -15,7 +15,7 @@ export const BoundingBox: React.FC<BoundingBoxProps> = ({ onUploadSuccess }) => 
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://docsy-7.onrender.com";
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();

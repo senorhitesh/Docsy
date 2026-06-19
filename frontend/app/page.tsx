@@ -34,7 +34,7 @@ export default function Home() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [fetchingDocs, setFetchingDocs] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://docsy-7.onrender.com";
 
   // Fetch documents if user is logged in
   const fetchDocuments = async () => {

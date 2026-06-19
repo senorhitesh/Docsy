@@ -138,7 +138,7 @@ export default function SignPage({
   const [activeDragId, setActiveDragId] = useState<number | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://docsy-7.onrender.com";
 
   // Load PDF.js from CDN
   useEffect(() => {
